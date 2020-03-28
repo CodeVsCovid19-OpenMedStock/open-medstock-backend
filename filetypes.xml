@@ -2,6 +2,7 @@
   <component name="FileTypeManager" version="17">
     <extensionMap>
       <mapping pattern="Pipfile" type="PLAIN_TEXT" />
+      <mapping ext="wsgi" type="PLAIN_TEXT" />
     </extensionMap>
   </component>
 </application>
