@@ -7,6 +7,7 @@ from service import UserService
 from service import MedicineService
 from service import StockService
 from exception import Error
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
 Bootstrap(app)
@@ -16,6 +17,7 @@ Bootstrap(app)
 ####     USER INTERFACE             ###
 #######################################
 @app.route('/user/me/<string:username>', methods=['GET'])
+@cross_origin() # allow all origins all methods.
 def get_user_me(username):
     userService = UserService.UserService()
     response = userService.get_me(username)
@@ -25,6 +27,7 @@ def get_user_me(username):
 
 
 @app.route('/user', methods=['POST'])
+@cross_origin() # allow all origins all methods.
 def create_user():
     try:
         if not request.json:
@@ -39,6 +42,7 @@ def create_user():
 
 
 #@app.route('/user/login', methods=['POST'])
+@cross_origin() # allow all origins all methods.
 #def login_user():
 #    if not request.json:
 #        abort(400)
@@ -48,6 +52,7 @@ def create_user():
 ####     MEDICINE INTERFACE         ###
 #######################################
 @app.route('/medicine', methods=['GET'])
+@cross_origin() # allow all origins all methods.
 def get_all_medicine():
     medicineService = MedicineService.MedicineService()
     response = medicineService.get_all_medicine()
@@ -57,6 +62,7 @@ def get_all_medicine():
 
 
 @app.route('/medicine', methods=['POST'])
+@cross_origin() # allow all origins all methods.
 def create_medicine():
     if not request.json:
         abort(400)
@@ -69,6 +75,7 @@ def create_medicine():
 
 
 @app.route('/medicine/<int:medicine_id>', methods=['PUT'])
+@cross_origin() # allow all origins all methods.
 def update_medicine(medicine_id):
     try:
         if not request.json or not medicine_id:
@@ -83,6 +90,7 @@ def update_medicine(medicine_id):
 
 
 @app.route('/medicine/<int:medicine_id>/stock', methods=['PUT'])
+@cross_origin() # allow all origins all methods.
 def update_medicine_stock(medicine_id):
     if not request.json or not medicine_id or not request.headers.get('authorization'):
         abort(400)
@@ -99,6 +107,7 @@ def update_medicine_stock(medicine_id):
 ####     SUPPLIER INTERFACE         ###
 #######################################
 @app.route('/supplier/stock', methods=['GET'])
+@cross_origin() # allow all origins all methods.
 def supplier_stock():
     if not request.json or not request.headers.get('authorization'):
         abort(400)
@@ -119,12 +128,14 @@ def supplier_stock():
 ####     STOCK INTERFACE            ###
 #######################################
 @app.route('/stock/<int:medicine_id>', methods=['GET'])
+@cross_origin() # allow all origins all methods.
 def get_stock_by_medicine_id(medicine_id):
     if not medicine_id:
         abort(400)
 
 
 @app.route('/')
+@cross_origin() # allow all origins all methods.
 def hello_world():
     return 'Hello World!'
 
