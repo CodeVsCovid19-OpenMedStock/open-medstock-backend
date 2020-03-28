@@ -19,3 +19,7 @@ class StockService(object):
         self.__cur.execute(sql_query, data_tuple)
         return self.__cur.fetchone()
         pass
+
+    def get_stock_by_user_id(self, user_id):
+        print("search stock for user_id " + str(user_id))
+        #sql_query = "SELECT m.medicine_id, m.name, a.name as manufacturer, m.description, s.description as substance FROM medicine m, manufacturer a, substance s where m.manufacturer_id = a.manufacturer_id and m.substance_id = s.substance_id and m.medicine_id = %s"
