@@ -1,43 +1,48 @@
 
 CREATE TABLE 'unit' (
-  'unit_id' INT NOT NULL,
+  'unit_id' INT NOT NULL AUTO_INCREMENT,
   'description' VARCHAR(20) NOT NULL,
   PRIMARY KEY ('unit_id'),
   UNIQUE INDEX 'description_UNIQUE' ('description' ASC));
 
 CREATE TABLE 'institution_type' (
-  'institution_type_id' INT NOT NULL,
+  'institution_type_id' INT NOT NULL AUTO_INCREMENT,
   'description' VARCHAR(45) NOT NULL,
   PRIMARY KEY ('institution_type_id'),
   UNIQUE INDEX 'description_UNIQUE' ('description' ASC));
 
 CREATE TABLE 'manufacturer' (
-  'manufacturer_id' INT NOT NULL,
+  'manufacturer_id' INT NOT NULL AUTO_INCREMENT,
   'name' VARCHAR(45) NOT NULL,
   PRIMARY KEY ('manufacturer_id'),
   UNIQUE INDEX 'name_UNIQUE' ('name' ASC));
 
 CREATE TABLE 'substance' (
-  'substance_id' INT NOT NULL,
+  'substance_id' INT NOT NULL AUTO_INCREMENT,
   'description' VARCHAR(100) NOT NULL,
   PRIMARY KEY ('substance_id'),
   UNIQUE INDEX 'description_UNIQUE' ('description' ASC));
 
 CREATE TABLE 'medicine' (
-  'medicine_id' INT NOT NULL,
-  'manufacturer_id' INT NULL,
-  'name' VARCHAR(45) NULL,
-  'description' VARCHAR(100) NULL,
+  'medicine_id' INT NOT NULL AUTO_INCREMENT,
+  'manufacturer_id' INT NOT NULL,
+  'name' VARCHAR(45) NOT NULL,
+  'description' VARCHAR(100) NOT NULL,
+  'substance_id' INT(11) NOT NULL,
   PRIMARY KEY ('medicine_id'),
   INDEX 'manufacturer_id_idx' ('manufacturer_id' ASC),
   CONSTRAINT 'manufacturer_id'
     FOREIGN KEY ('manufacturer_id')
     REFERENCES 'manufacturer' ('manufacturer_id')
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+    ON UPDATE NO ACTION),
+  CONSTRAINT 'substance_id'
+    FOREIGN KEY ('substance_id')
+    REFERENCES 'substance' ('substance_id')
+    ON DELETE NO ACTION;
 
 CREATE TABLE 'user' (
-  'user_id' INT NOT NULL,
+  'user_id' INT NOT NULL AUTO_INCREMENT,
   'username' VARCHAR(45) NOT NULL,
   'instituation_name' VARCHAR(100) NOT NULL,
   'instituation_type' INT NOT NULL,
@@ -55,7 +60,7 @@ CREATE TABLE 'user' (
     ON UPDATE NO ACTION);
 
 CREATE TABLE 'stock' (
-  'supplier_id' INT NOT NULL,
+  'supplier_id' INT NOT NULL AUTO_INCREMENT,
   'medicine_id' INT NOT NULL,
   'gtin' INT NOT NULL,
   'amount_packages' VARCHAR(45) NOT NULL,
