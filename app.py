@@ -5,6 +5,7 @@ from flask_bootstrap import Bootstrap
 import json, os.path
 from service import UserService
 from service import MedicineService
+from service import StockService
 from exception import Error
 
 app = Flask(__name__)
@@ -16,26 +17,31 @@ Bootstrap(app)
 #######################################
 @app.route('/user/me/<string:username>', methods=['GET'])
 def get_user_me(username):
-    # db = Database()
     userService = UserService.UserService()
     response = userService.get_me(username)
     if response is None:
         abort(403)
-    return jsonify({'test': 'test'}), 200
+    return jsonify(response), 200
 
 
 @app.route('/user', methods=['POST'])
 def create_user():
-    if not request.json:
-        abort(400)
+    try:
+        if not request.json:
+            abort(400)
+        user_dict = request.json
+        userService = UserService.UserService()
+        id = userService.create_user(user_dict)
 
-    return jsonify({'test': 'test'}), 201
+        return jsonify({'id': id}), 201
+    except Error.InputError as err:
+        return jsonify({'error': err.message}), 400
 
 
-@app.route('/user/login', methods=['POST'])
-def login_user():
-    if not request.json:
-        abort(400)
+#@app.route('/user/login', methods=['POST'])
+#def login_user():
+#    if not request.json:
+#        abort(400)
 
 
 #######################################
@@ -74,6 +80,17 @@ def update_medicine(medicine_id):
         return jsonify(response), 200
     except Error.NotFoundError as err:
         abort(404)
+
+
+#######################################
+####     STOCK INTERFACE            ###
+#######################################
+@app.route('/stock/<int:medicine_id>', methods=['GET'])
+def get_stock_by_medicine_id(medicine_id):
+    if not medicine_id:
+        abort(400)
+
+
 
 
 @app.route('/')

@@ -44,8 +44,8 @@ CREATE TABLE 'medicine' (
 CREATE TABLE 'user' (
   'user_id' INT NOT NULL AUTO_INCREMENT,
   'username' VARCHAR(45) NOT NULL,
-  'instituation_name' VARCHAR(100) NOT NULL,
-  'instituation_type' INT NOT NULL,
+  'institution_name' VARCHAR(100) NOT NULL,
+  'institution_type' INT NOT NULL,
   'contact_person' VARCHAR(45) NOT NULL,
   'email_address' VARCHAR(45) NOT NULL,
   'phone_number' VARCHAR(45) NOT NULL,
