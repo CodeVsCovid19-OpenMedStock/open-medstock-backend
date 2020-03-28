@@ -9,6 +9,9 @@ pylint = "*"
 [packages]
 flask = "*"
 configparser = "*"
+pipenv = "*"
+flask-mysql = "*"
 
 [requires]
 python_version = "3.7"
+
