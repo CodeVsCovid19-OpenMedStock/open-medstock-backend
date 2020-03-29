@@ -80,7 +80,7 @@ class StockService(object):
 
             stock_response.append(self.__get_stock(medicine_id, user_id, stock_element['gtin']))
 
-        self.__delete_stock(stock_dict)
+        self.__delete_stock(medicine_id, user_id, stock_dict)
 
         self.__db.commit()
         return stock_response
@@ -99,8 +99,10 @@ class StockService(object):
         print(data_tuple)
         self.__cur.execute(sql_query, data_tuple)
 
-    def __delete_stock(self, stock_dict):
-        self.__cur.execute("SELECT s.gtin FROM stock s")
+    def __delete_stock(self, medicine_id, user_id, stock_dict):
+        sql_query = "SELECT s.gtin FROM stock s WHERE medicine_id = %s and supplier_id = %s"
+        data_tuple = (medicine_id, user_id)
+        self.__cur.execute(sql_query, data_tuple)
         gtin = [item['gtin'] for item in self.__cur.fetchall()]
         print(gtin)
         for stock in stock_dict:

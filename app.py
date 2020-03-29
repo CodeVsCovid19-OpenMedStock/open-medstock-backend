@@ -113,7 +113,8 @@ def medicine(medicine_id):
 @app.route('/medicine/<int:medicine_id>/stock', methods=['PUT'])
 @cross_origin() # allow all origins all methods.
 def update_medicine_stock(medicine_id):
-    if not request.json or not medicine_id or not request.headers.get('Authorization'):
+    # check if the len of request.json is greater than 0. An empty array delivers a len of 0
+    if not len(request.json) == 0 and (not request.json or not medicine_id or not request.headers.get('Authorization')):
         abort(400)
 
     username = __username()

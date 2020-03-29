@@ -1,0 +1,324 @@
+{
+	"info": {
+		"_postman_id": "b64ac08d-21a2-459f-a142-6e39c84c202c",
+		"name": "OpenMedStock",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "GET user_me",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/user/me/:username",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"user",
+								"me",
+								":username"
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "apotheke_alpha"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST create_user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"user_id\": null,\r\n\t\"username\": \"arzt_delta\",\r\n\t\"institution_name\": \"Doctor Delta\",\r\n\t\"institution_type\": \"Arzt\",\r\n\t\"contact_person\": \"Hugo Delta\",\r\n\t\"email_address\": \"delta@delta.com\",\r\n\t\"phone_number\": \"+41123456978\",\r\n\t\"mobile_number\": \"+41793456978\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "medicine",
+			"item": [
+				{
+					"name": "GET all_medicine",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/medicine",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"medicine"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET all_medicine_stock",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/medicine/instock",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"medicine",
+								"instock"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST create_medicine",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"medicine_id\": null,\r\n\t\"name\": \"Dafalgan\",\r\n\t\"manufacturer\": \"Bristol-Myers Squibb SA\",\r\n\t\"description\": \"DAFALGAN Brausetabl\",\r\n\t\"substance\": \"paracetamolum\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/medicine",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"medicine"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT update_medicine",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"medicine_id\": 1,\r\n\t\"name\": \"Dafalgan\",\r\n\t\"manufacturer\": \"Bristol-Myers Squibb SA\",\r\n\t\"description\": \"DAFALGAN Brausetabl\",\r\n\t\"substance\": \"paracetamolum\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/medicine/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"medicine",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT update_stock",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "1",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n\t{\n\t\t\"gtin\": 7680475030868,\n\t\t\"amount_packages\": 2,\n\t\t\"amount_units\": 20,\n\t\t\"unit_size\": 1,\n\t\t\"unit\": \"g\"\n\t},\n\t{\n        \"amount_packages\": \"55\",\n        \"amount_units\": \"16\",\n        \"unit\": \"mg\",\n        \"gtin\": 7680475030271,\n        \"unit_size\": \"500\"\n    },\n    {\n    \t\"amount_packages\": \"20\",\n    \t\"amount_units\": \"10\",\n    \t\"gtin\": 6465464,\n    \t\"unit\": \"mg\",\n    \t\"unit_size\": \"1000\"\n    },\n    {\n    \t\"amount_packages\": \"5\",\n    \t\"amount_units\": \"20\",\n    \t\"gtin\": 6546546565,\n    \t\"unit\": \"mg\",\n    \t\"unit_size\": \"400\"\n    }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/medicine/:id/stock",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"medicine",
+								":id",
+								"stock"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "stock",
+			"item": [
+				{
+					"name": "GET stock_by_medicine",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/stock/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"stock",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET supplier_stock",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "1",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/supplier/stock",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"supplier",
+								"stock"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET supplier_stock_by_medicine",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "1",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/supplier/stock/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"supplier",
+								"stock",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
