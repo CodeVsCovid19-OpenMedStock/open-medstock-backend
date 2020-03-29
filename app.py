@@ -104,7 +104,7 @@ def medicine(medicine_id):
 @app.route('/medicine/<int:medicine_id>/stock', methods=['PUT'])
 @cross_origin() # allow all origins all methods.
 def update_medicine_stock(medicine_id):
-    if not request.json or not medicine_id or not request.headers.get('authorization'):
+    if not request.json or not medicine_id or not request.headers.get('Authorization'):
         abort(400)
 
     username = __username()
@@ -136,7 +136,7 @@ def update_medicine_stock(medicine_id):
 @app.route('/supplier/stock', methods=['GET'])
 @cross_origin() # allow all origins all methods.
 def supplier_stock():
-    if not request.headers.get('authorization'):
+    if not request.headers.get('Authorization'):
         abort(400)
 
     username = __username()
@@ -188,7 +188,7 @@ def internal_server_error(error):
 
 
 def __username():
-    token = request.headers.get('authorization').replace('Bearer ', '')
+    token = request.headers.get('Authorization').replace('Bearer ', '')
     if token == '1':
         return 'apotheke_alpha'
     elif token == '2':
