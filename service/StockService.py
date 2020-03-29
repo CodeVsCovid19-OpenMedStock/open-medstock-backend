@@ -28,7 +28,7 @@ class StockService(object):
         stock_list = list()
         # go through the user list and read stock per user and add the medicine data to one dictionary list
         for oneuser in user:
-            sql_query = "SELECT s.gtin, s.amount_packages, s.amount_units, s.unit_size, u.description FROM stock s, unit u where s.unit_id = u.unit_id and s.medicine_id = %s and s.supplier_id = %s"
+            sql_query = "SELECT s.gtin, s.amount_packages, s.amount_units, s.unit_size, u.description as unit FROM stock s, unit u where s.unit_id = u.unit_id and s.medicine_id = %s and s.supplier_id = %s"
             data_tuple = (medicine_id, oneuser['user_id'])
             self.__cur.execute(sql_query, data_tuple)
             stock = self.__cur.fetchall()
@@ -49,7 +49,7 @@ class StockService(object):
         stock_list = list()
         # go through the medicine list and read stock per user and add the medicine with stock data to one dictionary list
         for med in medicine:
-            sql_query = "SELECT s.gtin, s.amount_packages, s.amount_units, s.unit_size, u.description FROM stock s, unit u where s.unit_id = u.unit_id and s.medicine_id = %s and s.supplier_id = %s"
+            sql_query = "SELECT s.gtin, s.amount_packages, s.amount_units, s.unit_size, u.description as unit FROM stock s, unit u where s.unit_id = u.unit_id and s.medicine_id = %s and s.supplier_id = %s"
             data_tuple = (med['medicine_id'], user_id)
             self.__cur.execute(sql_query, data_tuple)
             stock = self.__cur.fetchall()
@@ -57,26 +57,27 @@ class StockService(object):
             stock_list.append(stock_dict)
         return stock_list
 
-        #sql_query = "SELECT m.medicine_id, m.name, a.name as manufacturer, m.description, s.description as substance FROM medicine m, manufacturer a, substance s where m.manufacturer_id = a.manufacturer_id and m.substance_id = s.substance_id and m.medicine_id = %s"
-
     def update_stock(self, medicine_id, user_id, stock_dict):
         print("search stock for user_id " + str(user_id))
-        unit = self.__unit.get_unit_by_description(stock_dict['unit'])
-        if not unit:
-            print("Unit with name " + stock_dict['unit'] + " not found -> create unit")
-            unit_id = int(self.__unit.create_unit(stock_dict['substance']))
-        else:
-            unit_id = int(unit['unit_id'])
+        stock_response = list()
+        for stock_element in stock_dict:
+            print(stock_element)
+            unit = self.__unit.get_unit_by_description(stock_element['unit'])
+            if not unit:
+                print("Unit with name " + stock_element['unit'] + " not found -> create unit")
+                unit_id = int(self.__unit.create_unit(stock_element['substance']))
+            else:
+                unit_id = int(unit['unit_id'])
 
-        stock = self.__get_stock(medicine_id, user_id, stock_dict['gtin'])
-        if not stock:
-            self.__insert_stock(medicine_id, user_id, unit_id, stock_dict)
-        else:
-            self.__update_stock(medicine_id, user_id, unit_id, stock_dict)
+            stock = self.__get_stock(medicine_id, user_id, stock_element['gtin'])
+            if not stock:
+                self.__insert_stock(medicine_id, user_id, unit_id, stock_element)
+            else:
+                self.__update_stock(medicine_id, user_id, unit_id, stock_element)
 
-        self.__db.commit()
-        stock = self.__get_stock(medicine_id, user_id, stock_dict['gtin'])
-        return stock
+            self.__db.commit()
+            stock_response.append(self.__get_stock(medicine_id, user_id, stock_element['gtin']))
+        return stock_response
 
     def __insert_stock(self, medicine_id, user_id, unit_id, stock_dict):
         print("create new stock " + str(medicine_id) + " " + str(user_id))

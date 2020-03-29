@@ -8,6 +8,7 @@ from service import MedicineService
 from service import StockService
 from exception import Error
 from flask_cors import CORS, cross_origin
+#import jwt
 
 app = Flask(__name__)
 Bootstrap(app)
@@ -166,12 +167,6 @@ def get_stock_by_medicine_id(medicine_id):
     return jsonify(response), 200
 
 
-@app.route('/')
-@cross_origin() # allow all origins all methods.
-def hello_world():
-    return 'Hello World!'
-
-
 @app.errorhandler(400)
 def not_found(error):
     return make_response(jsonify({'error', 'Bad Request'}), 400)
@@ -193,8 +188,13 @@ def __username():
         return 'apotheke_alpha'
     elif token == '2':
         return 'spital_beta'
+    elif token == '3':
+        return 'arzt_delta'
     else:
         abort(400)
+    #else:
+        #payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+        #print(payload)
 
 
 if __name__ == '__main__':
