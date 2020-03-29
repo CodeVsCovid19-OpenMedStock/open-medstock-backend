@@ -22,6 +22,12 @@ class MedicineService(object):
 
         return result
 
+    def get_all_medicine_with_stock(self):
+        self.__cur.execute("SELECT distinct m.medicine_id, m.name, a.name as manufacturer, m.description, s.description as substance FROM medicine m, manufacturer a, substance s, stock t where m.manufacturer_id = a.manufacturer_id and m.substance_id = s.substance_id and m.medicine_id = t.medicine_id")
+        result = self.__cur.fetchall()
+
+        return result
+
     def get_medicine_by_id(self, medicine_id):
         print("search for medicine by id " + str(medicine_id))
         sql_query = "SELECT m.medicine_id, m.name, a.name as manufacturer, m.description, s.description as substance FROM medicine m, manufacturer a, substance s where m.manufacturer_id = a.manufacturer_id and m.substance_id = s.substance_id and m.medicine_id = %s"

@@ -39,7 +39,7 @@ class StockService(object):
             stock_list.append(stock_dict)
         return stock_list
 
-    def get_stock_by_user_id(self, user_id):
+    def get_stock_by_user_id(self, user_id, medicine_id):
         print("search stock for user_id " + str(user_id))
         sql_query = "SELECT distinct m.medicine_id, m.name, a.name as manufacturer, m.description, s.description as substance FROM medicine m, manufacturer a, substance s, stock t where m.manufacturer_id = a.manufacturer_id and m.substance_id = s.substance_id and m.medicine_id = t.medicine_id and t.supplier_id = %s"
         data_tuple = (user_id)
@@ -53,8 +53,11 @@ class StockService(object):
             data_tuple = (med['medicine_id'], user_id)
             self.__cur.execute(sql_query, data_tuple)
             stock = self.__cur.fetchall()
-            stock_dict = {"medicine": med, "stock": stock}
-            stock_list.append(stock_dict)
+            if not medicine_id:
+                stock_dict = {"medicine": med, "stock": stock}
+                stock_list.append(stock_dict)
+            else:
+                stock_list = {"medicine": med, "stock": stock}
         return stock_list
 
     def update_stock(self, medicine_id, user_id, stock_dict):
@@ -75,6 +78,8 @@ class StockService(object):
             else:
                 self.__update_stock(medicine_id, user_id, unit_id, stock_element)
 
+            self.__delete_stock(stock_dict)
+
             self.__db.commit()
             stock_response.append(self.__get_stock(medicine_id, user_id, stock_element['gtin']))
         return stock_response
@@ -92,6 +97,14 @@ class StockService(object):
         data_tuple = (stock_dict['amount_packages'], stock_dict['amount_units'], stock_dict['unit_size'], unit_id, medicine_id, user_id, stock_dict['gtin'])
         print(data_tuple)
         self.__cur.execute(sql_query, data_tuple)
+
+    def __delete_stock(self, stock_dict):
+        self.__cur.execute("SELECT s.gtin FROM stock s")
+        gtin = self.__cur.fetchall()
+        gtin_to_delete = list
+        print(gtin)
+        #for
+        pass
 
     def __get_stock(self, medicine_id, user_id, gtin):
         sql_query = "SELECT s.supplier_id, s.medicine_id, s.gtin, s.amount_packages, s.amount_units, s.unit_size, u.description as unit FROM stock s, unit u WHERE s.unit_id = u.unit_id and s.medicine_id = %s and s.supplier_id = %s and s.gtin = %s"

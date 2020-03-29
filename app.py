@@ -61,6 +61,14 @@ def get_all_medicine():
         return '', 204
     return jsonify(response), 200
 
+@app.route('/medicine/instock', methods=['GET'])
+@cross_origin() # allow all origins all methods.
+def get_all_medicine_with_stock():
+    medicineService = MedicineService.MedicineService()
+    response = medicineService.get_all_medicine_with_stock()
+    if response is None or not response:
+        return '', 204
+    return jsonify(response), 200
 
 @app.route('/medicine', methods=['POST'])
 @cross_origin() # allow all origins all methods.
@@ -148,7 +156,25 @@ def supplier_stock():
         abort(404)
 
     stockService = StockService.StockService()
-    response = stockService.get_stock_by_user_id(me['user_id'])
+    response = stockService.get_stock_by_user_id(me['user_id'], None)
+
+    return jsonify(response), 200
+
+@app.route('/supplier/stock/<int:medicine_id>', methods=['GET'])
+@cross_origin() # allow all origins all methods.
+def supplier_stock_by_medicine_id(medicine_id):
+    if not request.headers.get('Authorization'):
+        abort(400)
+
+    username = __username()
+    userService = UserService.UserService()
+    me = userService.get_me(username)
+
+    if not me:
+        abort(404)
+
+    stockService = StockService.StockService()
+    response = stockService.get_stock_by_user_id(me['user_id'], medicine_id)
 
     return jsonify(response), 200
 
