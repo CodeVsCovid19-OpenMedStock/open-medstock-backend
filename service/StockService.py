@@ -106,8 +106,8 @@ class StockService(object):
         gtin = [item['gtin'] for item in self.__cur.fetchall()]
         print(gtin)
         for stock in stock_dict:
-            if stock['gtin'] in gtin:
-                gtin.remove(stock['gtin'])
+            if int(stock['gtin']) in gtin:
+                gtin.remove(int(stock['gtin']))
 
         print("gtin to be deleted " + str(gtin))
         for element in gtin:
