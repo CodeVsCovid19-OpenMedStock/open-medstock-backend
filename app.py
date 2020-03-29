@@ -184,6 +184,7 @@ def internal_server_error(error):
 
 def __username():
     token = request.headers.get('Authorization').replace('Bearer ', '')
+    #if len(token) == 1:
     if token == '1':
         return 'apotheke_alpha'
     elif token == '2':
