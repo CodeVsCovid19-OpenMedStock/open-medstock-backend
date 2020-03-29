@@ -74,19 +74,31 @@ def create_medicine():
     return jsonify({'id': id}), 201
 
 
-@app.route('/medicine/<int:medicine_id>', methods=['PUT'])
+@app.route('/medicine/<int:medicine_id>', methods=['PUT', 'GET'])
 @cross_origin() # allow all origins all methods.
-def update_medicine(medicine_id):
+def medicine(medicine_id):
+    if not medicine_id:
+        abort(400)
+    medicineService = MedicineService.MedicineService()
     try:
-        if not request.json or not medicine_id:
+        # get medicine by id
+        if request.method == 'GET':
+            response = medicineService.get_medicine_by_id(medicine_id)
+            if response is None or not response:
+                return '', 204
+        # update medicine
+        elif request.method == 'PUT':
+            if not request.json:
+                abort(400)
+            medicine_dict = request.json
+            # print(medicine_dict)
+            response = medicineService.update_medicine(medicine_id, medicine_dict)
+        else:
             abort(400)
-        medicine_dict = request.json
-        print(medicine_dict)
-        medicineService = MedicineService.MedicineService()
-        response = medicineService.update_medicine(medicine_id, medicine_dict)
-        return jsonify(response), 200
     except Error.NotFoundError as err:
         abort(404)
+
+    return jsonify(response), 200
 
 
 @app.route('/medicine/<int:medicine_id>/stock', methods=['PUT'])
