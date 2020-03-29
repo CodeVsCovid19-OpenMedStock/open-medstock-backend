@@ -56,7 +56,7 @@ class StockService(object):
             if not medicine_id:
                 stock_dict = {"medicine": med, "stock": stock}
                 stock_list.append(stock_dict)
-            else:
+            elif medicine_id == med['medicine_id']:
                 stock_list = {"medicine": med, "stock": stock}
         return stock_list
 
