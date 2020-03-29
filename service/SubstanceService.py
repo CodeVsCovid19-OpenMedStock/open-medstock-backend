@@ -1,7 +1,5 @@
 #!/usr/bin/python
 
-from database import Database
-
 
 class SubstanceService(object):
     def __init__(self, db, cur):

@@ -62,12 +62,12 @@ CREATE TABLE 'user' (
 CREATE TABLE 'stock' (
   'supplier_id' INT NOT NULL AUTO_INCREMENT,
   'medicine_id' INT NOT NULL,
-  'gtin' INT NOT NULL,
+  'gtin' BIGINT(11) NOT NULL,
   'amount_packages' VARCHAR(45) NOT NULL,
   'amount_units' VARCHAR(45) NOT NULL,
   'unit_size' VARCHAR(45) NOT NULL,
   'unit_id' INT NOT NULL,
-  PRIMARY KEY ('supplier_id', 'medicine_id'),
+  PRIMARY KEY ('supplier_id', 'medicine_id', 'gtin'),
   INDEX 'unit_id_idx' ('unit_id' ASC),
   INDEX 'medicine_id_idx' ('medicine_id' ASC),
   CONSTRAINT 'user_id'

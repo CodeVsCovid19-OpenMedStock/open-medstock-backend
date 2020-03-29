@@ -16,7 +16,7 @@ class UserService:
         sql_query = "SELECT u.user_id, u.username, u.institution_name, i.description, u.email_address, u.phone_number, u.mobile_number FROM user u, institution_type i where u.institution_type = i.institution_type_id and username = %s"
         data_tuple = (username)
         self.__cur.execute(sql_query, data_tuple)
-        return self.__cur.fetchall()
+        return self.__cur.fetchone()
 
     def create_user(self, user_dict):
         me = self.get_me(user_dict['username'])
@@ -59,7 +59,7 @@ class UserService:
     def __create_institution(self, institution_type):
         print("create new institution " + institution_type)
         sql_query = "INSERT INTO institution_type(description) VALUES(%s)"
-        data_tuple = (substance_name)
+        data_tuple = (institution_type)
         self.__cur.execute(sql_query, data_tuple)
         if self.__cur.lastrowid:
             print('last insert id', self.__cur.lastrowid)

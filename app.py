@@ -42,7 +42,7 @@ def create_user():
 
 
 #@app.route('/user/login', methods=['POST'])
-@cross_origin() # allow all origins all methods.
+# @cross_origin() # allow all origins all methods.
 #def login_user():
 #    if not request.json:
 #        abort(400)
@@ -96,11 +96,26 @@ def update_medicine_stock(medicine_id):
         abort(400)
 
     username = __username()
+    stock_dict = request.json
 
     userService = UserService.UserService()
     me = userService.get_me(username)
 
     if not me:
+        abort(404)
+
+    medicineService = MedicineService.MedicineService()
+    medicine = medicineService.get_medicine_by_id(medicine_id)
+
+    if not medicine:
+        abort(404)
+
+    try:
+        stockService = StockService.StockService()
+        print(me)
+        response = stockService.update_stock(medicine_id, me['user_id'], stock_dict)
+        return jsonify(response), 200
+    except Error.NotFoundError as err:
         abort(404)
 
 #######################################
@@ -109,7 +124,7 @@ def update_medicine_stock(medicine_id):
 @app.route('/supplier/stock', methods=['GET'])
 @cross_origin() # allow all origins all methods.
 def supplier_stock():
-    if not request.json or not request.headers.get('authorization'):
+    if not request.headers.get('authorization'):
         abort(400)
 
     username = __username()
@@ -132,6 +147,11 @@ def supplier_stock():
 def get_stock_by_medicine_id(medicine_id):
     if not medicine_id:
         abort(400)
+
+    stockService = StockService.StockService()
+    response = stockService.get_stock_by_medcine_id(medicine_id)
+
+    return jsonify(response), 200
 
 
 @app.route('/')
@@ -156,7 +176,7 @@ def internal_server_error(error):
 
 
 def __username():
-    token = request.headers.get('authorization').replace('Bearer', '')
+    token = request.headers.get('authorization').replace('Bearer ', '')
     if token == '1':
         return 'apotheke_alpha'
     elif token == '2':
