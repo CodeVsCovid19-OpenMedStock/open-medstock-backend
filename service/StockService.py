@@ -78,10 +78,11 @@ class StockService(object):
             else:
                 self.__update_stock(medicine_id, user_id, unit_id, stock_element)
 
-            self.__delete_stock(stock_dict)
-
-            self.__db.commit()
             stock_response.append(self.__get_stock(medicine_id, user_id, stock_element['gtin']))
+
+        self.__delete_stock(stock_dict)
+
+        self.__db.commit()
         return stock_response
 
     def __insert_stock(self, medicine_id, user_id, unit_id, stock_dict):
@@ -100,11 +101,17 @@ class StockService(object):
 
     def __delete_stock(self, stock_dict):
         self.__cur.execute("SELECT s.gtin FROM stock s")
-        gtin = self.__cur.fetchall()
-        gtin_to_delete = list
+        gtin = [item['gtin'] for item in self.__cur.fetchall()]
         print(gtin)
-        #for
-        pass
+        for stock in stock_dict:
+            if stock['gtin'] in gtin:
+                gtin.remove(stock['gtin'])
+
+        print("gtin to be deleted " + str(gtin))
+        for element in gtin:
+            sql_query = "DELETE FROM stock WHERE gtin = %s"
+            data_tuple = (element)
+            self.__cur.execute(sql_query, data_tuple)
 
     def __get_stock(self, medicine_id, user_id, gtin):
         sql_query = "SELECT s.supplier_id, s.medicine_id, s.gtin, s.amount_packages, s.amount_units, s.unit_size, u.description as unit FROM stock s, unit u WHERE s.unit_id = u.unit_id and s.medicine_id = %s and s.supplier_id = %s and s.gtin = %s"
