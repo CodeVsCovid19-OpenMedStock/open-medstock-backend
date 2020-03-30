@@ -21,7 +21,7 @@ class StockService(object):
         self.__cur.execute(sql_query, data_tuple)
         medicine = self.__cur.fetchone()
 
-        sql_query = "SELECT distinct u.user_id, u.username, u.institution_name, i.description, u.email_address, u.phone_number, u.mobile_number FROM user u, institution_type i, stock s where u.institution_type = i.institution_type_id and u.user_id = s.supplier_id and s.medicine_id = %s"
+        sql_query = "SELECT distinct u.user_id, u.username, u.institution_name, u.contact_person, i.description, u.email_address, u.phone_number, u.mobile_number FROM user u, institution_type i, stock s where u.institution_type = i.institution_type_id and u.user_id = s.supplier_id and s.medicine_id = %s"
         data_tuple = (medicine_id)
         self.__cur.execute(sql_query, data_tuple)
         user = self.__cur.fetchall()
