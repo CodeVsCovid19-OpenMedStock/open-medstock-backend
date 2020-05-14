@@ -1,0 +1,20 @@
+<application>
+  <component name="RInterpreterSettings">
+    <option name="interpreters">
+      <list>
+        <RSerializableInterpreter>
+          <option name="name" value="Suggested" />
+          <option name="path" value="C:\Program Files\R\R-3.6.2\bin\R.exe" />
+          <option name="timestamp" value="1576136680000" />
+          <option name="version" value="3.6.2" />
+        </RSerializableInterpreter>
+        <RSerializableInterpreter>
+          <option name="name" value="Suggested" />
+          <option name="path" value="C:\Program Files\R\R-4.0.0\bin\R.exe" />
+          <option name="timestamp" value="1587712058000" />
+          <option name="version" value="4.0.0" />
+        </RSerializableInterpreter>
+      </list>
+    </option>
+  </component>
+</application>
