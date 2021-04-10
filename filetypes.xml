@@ -1,8 +1,12 @@
 <application>
-  <component name="FileTypeManager" version="17">
+  <component name="FileTypeManager" version="18">
     <extensionMap>
+      <mapping ext="csv" type="CSV" />
+      <removed_mapping ext="tsv" type="CSV/TSV" />
+      <removed_mapping ext="csv" type="CSV/TSV" />
       <mapping pattern="Pipfile" type="PLAIN_TEXT" />
       <mapping ext="wsgi" type="PLAIN_TEXT" />
+      <mapping ext="tsv" type="TSV" />
     </extensionMap>
   </component>
 </application>
